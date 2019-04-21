@@ -10,7 +10,7 @@ namespace PaymentContext.Domain.Entities
     public class Student : Entity
     {
         private IList<Subscription> _subscriptions;
-        public Student(Name name, Document document, 
+        public Student(Name name, Document document,
             Email email)
         {
             Name = name;
@@ -21,12 +21,13 @@ namespace PaymentContext.Domain.Entities
             AddNotifications(name, document, email);
         }
 
-        public Name Name { get;  private set; }
+        public Name Name { get; private set; }
         public Document Document { get; private set; }
         public Email Email { get; private set; }
         public Address Address { get; private set; }
-        public IReadOnlyCollection<Subscription> Subscriptions { 
-            get { return _subscriptions.ToArray(); }  
+        public IReadOnlyCollection<Subscription> Subscriptions
+        {
+            get { return _subscriptions.ToArray(); }
         }
 
         public void AddSubscription(Subscription subscription)
@@ -37,17 +38,20 @@ namespace PaymentContext.Domain.Entities
             {
                 if (sub.Active)
                     hasSubscriptionActive = true;
-            }            
+            }
 
-            // AddNotifications(new Contract()
-            //     .Requires()
-            //     .IsFalse(hasSubscriptionActive, "Student.Subscriptions", "Você já tem uma assinatura ativa")
-            // );
+            AddNotifications(new Contract()
+                .Requires()
+                .IsTrue(hasSubscriptionActive, "Student.Subscriptions", "Você já tem uma assinatura ativa")
+                .AreEquals(0, subscription.Payments.Count, "Student.Subscription.Payments", "Esta assinatura não possui pagamentos")
+            );
+
+            if (Valid)
+                _subscriptions.Add(subscription);
 
             // alternativa
-            if (hasSubscriptionActive)
-                AddNotification("Student.Subscriptions", "Você já tem uma assinatura ativa");
+            // if (hasSubscriptionActive)
+            //     AddNotification("Student.Subscriptions", "Você já tem uma assinatura ativa");
         }
     }
-    
 }
