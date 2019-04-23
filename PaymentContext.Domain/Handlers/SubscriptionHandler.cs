@@ -73,6 +73,10 @@ namespace PaymentContext.Domain.Handlers
             // agrupar as validações
             AddNotifications(name, document, email, address, student, subscription, payment);
 
+            // checar as validações
+            if (Invalid)
+                return new CommandResult(false, "não foi possível realizar sua assinatura");            
+
             // salvar informações
             _repository.CreateSubscription(student);
 
@@ -80,7 +84,7 @@ namespace PaymentContext.Domain.Handlers
             _emailService.Send(student.ToString(), student.Email.Address, "bem vindo ao balta.io", "Sua assinatura foi criada");
 
             // retornar informações
-            return new CommandResult(true, "Assinatura realizada com sucesso.");
+            return new CommandResult(true, "Assinatura realizada com sucesso");
         }
 
         public ICommandResult Handle(CreatePayPalSubscriptionCommand command)
