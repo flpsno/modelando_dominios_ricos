@@ -1,7 +1,7 @@
 using System;
 using PaymentContext.Domain.Enums;
 
-namespace PaymentContext.Commands
+namespace PaymentContext.Domain.Commands
 {
     public class CreateCreditCardSubscriptionCommand
     {

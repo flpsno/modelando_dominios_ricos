@@ -4,7 +4,7 @@ using Flunt.Validations;
 using PaymentContext.Domain.Enums;
 using PaymentContext.Shared.Commands;
 
-namespace PaymentContext.Commands
+namespace PaymentContext.Domain.Commands
 {
     public class CreateBoletoSubscriptionCommand : Notifiable, ICommand
     {
